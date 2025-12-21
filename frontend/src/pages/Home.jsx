@@ -8,7 +8,7 @@ function Home() {
   const [predictions, setPredictions] = useState([]);
 
   useEffect(() => {
-    getPredicitons();
+    getPredictions();
   }, []);
 
  const getPredictions = async () => {
@@ -40,7 +40,7 @@ const deletePrediction = async (id) => {
 
   return (
     <div>
-      <PredictionsForm onSourceChange={getPredicitons} />
+      <PredictionsForm onSourceChange={getPredictions} />
       <div>
         <h2>Predictions</h2>
         {predictions.map((prediction) => (

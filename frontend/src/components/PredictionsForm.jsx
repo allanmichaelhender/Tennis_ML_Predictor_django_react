@@ -3,7 +3,7 @@ import { useForm, useWatch } from "react-hook-form";
 import axios from "axios";
 import api from "../api";
 
-const PortfoliosForm = ({ onSourceChange }) => {
+const PredictionsForm = ({ onSourceChange }) => {
   const {
     register,
     handleSubmit,
@@ -19,7 +19,7 @@ const PortfoliosForm = ({ onSourceChange }) => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await api.post("/api/preditions/", data);
+      const response = await api.post("/api/predictions/", data);
       alert("Match Predicted!");
       onSourceChange();
     } catch (error) {
@@ -68,4 +68,4 @@ const PortfoliosForm = ({ onSourceChange }) => {
   );
 };
 
-export default PortfoliosForm;
+export default PredictionsForm;
