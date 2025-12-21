@@ -32,6 +32,6 @@ class PlayersSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     extra_kwargs = {
-        "PlayerID": { "read_only": True },
+        "player_id": { "read_only": True },
         "full_name": { "read_only": True },
     }

@@ -1,7 +1,9 @@
 import React from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm, useWatch, Controller } from "react-hook-form";
 import axios from "axios";
 import api from "../api";
+import { useEffect, useState } from "react";
+import Select from "react-select";
 
 const PredictionsForm = ({ onSourceChange }) => {
   const {
@@ -10,10 +12,27 @@ const PredictionsForm = ({ onSourceChange }) => {
     control,
     formState: { errors },
   } = useForm({
-    defaultValues: {
-
-    },
+    defaultValues: {},
   });
+
+  const [players, setPlayers] = useState([]);
+
+  useEffect(() => {
+    api
+      .get("/api/players/")
+      .then((response) => {
+        // Axios puts the response data in a 'data' property
+        const formattedPlayers = response.data.map((p) => ({
+          value: p.player_id,
+          label: p.full_name,
+        }));
+        setPlayers(formattedPlayers);
+      })
+      .catch((err) => {
+        // Axios automatically catches 4xx and 5xx errors
+        console.error("API error:", err.message);
+      });
+  }, []);
 
   const today = new Date().toISOString().split("T")[0];
 
@@ -31,19 +50,36 @@ const PredictionsForm = ({ onSourceChange }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit, onError)}>
-
-      <input
-        type="number"
-        className="amount-input"
-        step="1"
-        {...register("player1ID", { valueAsNumber: true })}
+      <label>Player 1</label>
+      <Controller
+        name="player1_id"
+        control={control}
+        render={({ field: { onChange, value, ref } }) => (
+          <Select
+            inputRef={ref}
+            options={players}
+            // Match the current ID value to the correct object in 'players' list
+            value={players.find((c) => c.value === value)}
+            // Send only the ID (val.value) back to react-hook-form
+            onChange={(val) => onChange(val.value)}
+          />
+        )}
       />
 
-      <input
-        type="number"
-        className="amount-input"
-        step="1"
-        {...register("player2ID", { valueAsNumber: true })}
+      <label>Player 2</label>
+      <Controller
+        name="player2_id"
+        control={control}
+        render={({ field: { onChange, value, ref } }) => (
+          <Select
+            inputRef={ref}
+            options={players}
+            // Match the current ID value to the correct object in 'players' list
+            value={players.find((c) => c.value === value)}
+            // Send only the ID (val.value) back to react-hook-form
+            onChange={(val) => onChange(val.value)}
+          />
+        )}
       />
 
       <input
@@ -62,7 +98,7 @@ const PredictionsForm = ({ onSourceChange }) => {
         })}
       />
       {errors.start_date && <span>{errors.start_date.message}</span>}
-      
+
       <button type="submit">Submit</button>
     </form>
   );

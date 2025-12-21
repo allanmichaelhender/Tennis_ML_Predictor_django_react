@@ -11,32 +11,30 @@ function Home() {
     getPredictions();
   }, []);
 
- const getPredictions = async () => {
-  try {
-    const res = await api.get("/api/predictions/");
-    setPredictions(res.data);
-  } catch (err) {
-    alert(err);
-  }
-};
-
-const deletePrediction = async (id) => {
-  try {
-    const res = await api.delete(`/api/predictions/${id}/`);
-
-    if (res.status === 204) {
-      alert("Prediction deleted!");
-    } else {
-      alert("Failed to delete note.");
+  const getPredictions = async () => {
+    try {
+      const res = await api.get("/api/predictions/");
+      setPredictions(res.data);
+    } catch (err) {
+      alert(err);
     }
+  };
 
-    await getPredictions();
-    
-  } catch (err) {
-    alert(err);
-  }
-};
+  const deletePrediction = async (id) => {
+    try {
+      const res = await api.delete(`/api/predictions/${id}/`);
 
+      if (res.status === 204) {
+        alert("Prediction deleted!");
+      } else {
+        alert("Failed to delete note.");
+      }
+
+      await getPredictions();
+    } catch (err) {
+      alert(err);
+    }
+  };
 
   return (
     <div>
@@ -45,7 +43,7 @@ const deletePrediction = async (id) => {
         <h2>Predictions</h2>
         {predictions.map((prediction) => (
           <div key={prediction.id}>
-            <Prediction prediciton={prediction} onDelete={deletePrediction} />
+            <Prediction prediction={prediction} onDelete={deletePrediction} />
           </div>
         ))}
       </div>

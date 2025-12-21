@@ -32,7 +32,7 @@ class PredictionsDelete(generics.DestroyAPIView):
         return Predictions.objects.filter(author=user)
 
 class PlayersView(generics.ListAPIView):
-    queryset = Players.objects.all().order_by('name')
+    queryset = Players.objects.all()
     serializer_class = PlayersSerializer
     
 
