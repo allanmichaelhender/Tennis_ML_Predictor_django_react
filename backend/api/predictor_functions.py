@@ -53,8 +53,8 @@ def generate_data(player1_id, player2_id, match_date):
 
 
     def find_ranking_points(player_w, player_l):
-        w_ranking_points = player_w["winner_rank_points"][0]
-        l_ranking_points = player_l["loser_rank_points"][0]
+        w_ranking_points = player_w["winner_rank_points"].iloc[0]
+        l_ranking_points = player_l["loser_rank_points"].iloc[0]
 
         if l_ranking_points < w_ranking_points:
             return l_ranking_points
@@ -63,6 +63,8 @@ def generate_data(player1_id, player2_id, match_date):
     
     player1_ranking_points = find_ranking_points(player1_w, player1_l)
     player2_ranking_points = find_ranking_points(player2_w, player2_l)
+
+    print(player1_ranking_points)
 
     ranking_diff = player1_ranking_points - player2_ranking_points
 
