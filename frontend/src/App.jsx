@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
+import Navbar from "./components/Navbar";
 import { ACCESS_TOKEN } from "./constants";
 
 function Logout({ onLogout }) {
@@ -21,15 +22,11 @@ function App() {
 
   return (
     <BrowserRouter>
+      <Navbar isLoggedIn={isLoggedIn} /> 
+      
       <Routes>
-        <Route
-          path="/"
-          element={<Home isLoggedIn={isLoggedIn} />}
-        />
-        <Route 
-          path="/login" 
-          element={<Login onLoginSuccess={updateAuthStatus} />} 
-        />
+        <Route path="/" element={<Home isLoggedIn={isLoggedIn} />} />
+        <Route path="/login" element={<Login onLoginSuccess={updateAuthStatus} />} />
         <Route path="/logout" element={<Logout onLogout={updateAuthStatus} />} />
         <Route path="/register" element={<Register />} />
         <Route path="*" element={<NotFound />} />
@@ -39,3 +36,4 @@ function App() {
 }
 
 export default App;
+

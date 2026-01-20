@@ -5,7 +5,12 @@ import api from "../api";
 import { useEffect, useState } from "react";
 import Select from "react-select";
 
+const getTodayString = () => new Date().toISOString().split('T')[0];
+const todayDate = getTodayString();
+
+
 const PredictionsForm = ({ isLoggedIn, onPredictionCreated }) => {
+
   const {
     register,
     handleSubmit,
@@ -13,7 +18,7 @@ const PredictionsForm = ({ isLoggedIn, onPredictionCreated }) => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      player1_id: null,
+      match_date: todayDate,
     },
   });
 
@@ -37,7 +42,6 @@ const PredictionsForm = ({ isLoggedIn, onPredictionCreated }) => {
   const today = new Date().toISOString().split("T")[0];
 
   const onSubmit = async (data) => {
-    // 1. Determine endpoint
     const endpoint = isLoggedIn
       ? "/api/predictions/"
       : "/api/predictions-guest/";
@@ -61,7 +65,7 @@ const PredictionsForm = ({ isLoggedIn, onPredictionCreated }) => {
   const onError = (errors) => console.log("Form Validation Errors:", errors);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit, onError)}>
+    <form className="form-container" onSubmit={handleSubmit(onSubmit, onError)}>
       <label>Player 1</label>
       <Controller
         name="player1_id"
@@ -70,9 +74,14 @@ const PredictionsForm = ({ isLoggedIn, onPredictionCreated }) => {
           <Select
             inputRef={ref}
             options={players}
-            // Match the current ID value to the correct object in 'players' list
+            classNames={{
+              control: () => "form-input select-control",
+              menu: () => "select-menu",
+              option: (state) =>
+                `select-option ${state.isFocused ? "is-focused" : ""} ${state.isSelected ? "is-selected" : ""}`,
+            }}
+            unstyled
             value={players.find((c) => c.value === value)}
-            // Send only the ID (val.value) back to react-hook-form
             onChange={(val) => onChange(val.value)}
           />
         )}
@@ -86,14 +95,20 @@ const PredictionsForm = ({ isLoggedIn, onPredictionCreated }) => {
           <Select
             inputRef={ref}
             options={players}
-            // Match the current ID value to the correct object in 'players' list
+            classNames={{
+              control: () => "form-input select-control",
+              menu: () => "select-menu",
+              option: (state) =>
+                `select-option ${state.isFocused ? "is-focused" : ""} ${state.isSelected ? "is-selected" : ""}`,
+            }}
+            unstyled
             value={players.find((c) => c.value === value)}
-            // Send only the ID (val.value) back to react-hook-form
             onChange={(val) => onChange(val.value)}
           />
         )}
       />
 
+      <label>Optional: Custom Historic Match Date</label>
       <input
         type="date"
         className="date-input-field"
@@ -111,7 +126,9 @@ const PredictionsForm = ({ isLoggedIn, onPredictionCreated }) => {
       />
       {errors.start_date && <span>{errors.start_date.message}</span>}
 
-      <button type="submit">Submit</button>
+      <button className="form-button" type="submit">
+        Submit
+      </button>
     </form>
   );
 };

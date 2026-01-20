@@ -1,36 +1,131 @@
+:root {
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --bg-card: #ffffff;
+  --text-main: #1f2937;
+  --text-muted: #6b7280;
+  --border: #e5e7eb;
+  --radius: 12px;
+}
+
 .form-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  margin: 50px auto;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
+  margin: 20px auto;
+  padding: 40px 32px;
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 
+              0 1px 2px -1px rgba(0, 0, 0, 0.1),
+              0 10px 15px -3px rgba(0, 0, 0, 0.05);
+  max-width: 600px;
+  border: 1px solid var(--border);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 .form-input {
-  width: 90%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
+  width: 100%;
+  padding: 12px 16px;
+  margin: 8px 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  background-color: #f9fafb;
+  min-width: 200px;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  background-color: #fff;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
 }
 
 .form-button {
-  width: 95%;
-  padding: 10px;
-  margin: 20px 0;
-  background-color: #007bff;
+  width: 50%;
+  padding: 12px;
+  margin-top: 24px;
+  background-color: var(--primary);
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
+  transition: transform 0.1s active, background-color 0.2s;
 }
 
 .form-button:hover {
-  background-color: #0056b3;
+  background-color: var(--primary-hover);
+}
+
+.form-button:active {
+  transform: scale(0.99); /* Modern "click" feel */
+}
+
+.form-container label {
+  margin: 12px 0 4px 0;   /* Space above and below label */
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  font-family: sans-serif;
+}
+
+.date-input-field {
+  min-height: 38px; 
+  margin-top: 4px
+}
+
+.select-control {
+  width: 100%;
+  display: flex !important;
+}
+
+/* Ensures the dropdown menu matches the width of the input box */
+.select-menu {
+   background-color: #ffffff; 
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 100;
+  margin-top: 4px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  overflow: hidden; /* Ensures options don't spill over rounded corners */
+}
+
+.select-menu > div {
+  padding: 4px 0; /* Vertical spacing for the list */
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.select-option {
+  /* Increase the first value (top/bottom) for more vertical space */
+  padding: 10px 16px; 
+  
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s ease;
+}
+
+
+.select-option.is-focused {
+  background-color: #f3f4f6; /* Light gray */
+  color: #111827;
+}
+
+/* State: Currently Selected */
+.select-option.is-selected {
+  background-color: #2563eb; /* Your primary blue */
+  color: #ffffff;
+}
+
+/* Optional: Add a checkmark or indicator to the selected item */
+.select-option.is-selected::after {
+  content: '✓';
+  float: right;
+  font-size: 12px;
 }

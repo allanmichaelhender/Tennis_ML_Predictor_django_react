@@ -3,6 +3,8 @@ import api from "../api";
 import PredictionsForm from "../components/PredictionsForm";
 import Prediction from "../components/Prediction";
 import "../styles/Home.css";
+import "../styles/Form.css";
+import "../styles/Prediction.css";
 
 function Home({ isLoggedIn }) {
   const [predictions, setPredictions] = useState([]);
@@ -14,7 +16,7 @@ function Home({ isLoggedIn }) {
     } else {
       setPredictions([]);
     }
-  }, [isLoggedIn]); 
+  }, [isLoggedIn]);
 
   const getPredictions = async () => {
     try {
@@ -48,15 +50,16 @@ function Home({ isLoggedIn }) {
       setPredictions(predictions.filter((p) => p.id !== id));
     }
   };
-
+  
   return (
-    <div>
+    <div className="home-wrapper">
+      {" "}
+      {/* Add a wrapper for overall spacing */}
       <PredictionsForm
         onPredictionCreated={handleNewPrediction}
         isLoggedIn={isLoggedIn}
       />
       <div className="predictions-list">
-        <h2>Predictions</h2>
         {predictions.map((p) => (
           <Prediction
             key={p.id}
