@@ -9,7 +9,7 @@ const getTodayString = () => new Date().toISOString().split('T')[0];
 const todayDate = getTodayString();
 
 
-const PredictionsForm = ({ isLoggedIn, onPredictionCreated }) => {
+const PredictionsForm = ({ isLoggedIn, onPredictionCreated, players }) => {
 
   const {
     register,
@@ -22,22 +22,6 @@ const PredictionsForm = ({ isLoggedIn, onPredictionCreated }) => {
     },
   });
 
-  const [players, setPlayers] = useState([]);
-
-  useEffect(() => {
-    api
-      .get("/api/players/")
-      .then((response) => {
-        const formattedPlayers = response.data.map((p) => ({
-          value: p.player_id,
-          label: p.full_name,
-        }));
-        setPlayers(formattedPlayers);
-      })
-      .catch((err) => {
-        console.error("API error:", err.message);
-      });
-  }, []);
 
   const today = new Date().toISOString().split("T")[0];
 
@@ -48,7 +32,6 @@ const PredictionsForm = ({ isLoggedIn, onPredictionCreated }) => {
 
     try {
       const response = await api.post(endpoint, data);
-      alert("Match Predicted!");
 
       if (onPredictionCreated) {
         onPredictionCreated(response.data);

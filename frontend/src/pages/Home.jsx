@@ -8,7 +8,8 @@ import "../styles/Prediction.css";
 
 function Home({ isLoggedIn }) {
   const [predictions, setPredictions] = useState([]);
-  console.log(isLoggedIn);
+  const [players, setPlayers] = useState([]);
+  
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -17,6 +18,21 @@ function Home({ isLoggedIn }) {
       setPredictions([]);
     }
   }, [isLoggedIn]);
+
+  useEffect(() => {
+    api
+      .get("/api/players/")
+      .then((response) => {
+        const formattedPlayers = response.data.map((p) => ({
+          value: p.player_id,
+          label: p.full_name,
+        })); 
+        setPlayers(formattedPlayers);
+      })
+      .catch((err) => {
+        console.error("API error:", err.message);
+      });
+  }, []);
 
   const getPredictions = async () => {
     try {
@@ -27,9 +43,14 @@ function Home({ isLoggedIn }) {
     }
   };
 
-  const handleNewPrediction = (predictionData) => {
-    setPredictions((prev) => [predictionData, ...prev]);
+const handleNewPrediction = (predictionData) => {
+  const predictionWithId = {
+    ...predictionData,
+    id: predictionData.id || crypto.randomUUID()
   };
+
+  setPredictions((prev) => [predictionWithId, ...prev]);
+};
 
   const deletePrediction = async (id) => {
     if (isLoggedIn) {
@@ -50,6 +71,8 @@ function Home({ isLoggedIn }) {
       setPredictions(predictions.filter((p) => p.id !== id));
     }
   };
+
+  console.log("Prediction IDs:", predictions.map(p => p.id));
   
   return (
     <div className="home-wrapper">
@@ -58,6 +81,7 @@ function Home({ isLoggedIn }) {
       <PredictionsForm
         onPredictionCreated={handleNewPrediction}
         isLoggedIn={isLoggedIn}
+        players={players}
       />
       <div className="predictions-list">
         {predictions.map((p) => (
@@ -65,6 +89,7 @@ function Home({ isLoggedIn }) {
             key={p.id}
             prediction={p}
             onDelete={() => deletePrediction(p.id)}
+            players={players}
           />
         ))}
       </div>
