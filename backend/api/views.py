@@ -38,6 +38,8 @@ class PredictionsListCreate(generics.ListCreateAPIView):
         p2 = serializer.validated_data.get("player2_id")
         m_date = serializer.validated_data.get("match_date")
 
+        print(p1, p2, m_date)
+
         # Call your prediction functions
         [[p2_log, p1_log]] = logistic_regression_predict(
             player1_id=p1, player2_id=p2, match_date=m_date

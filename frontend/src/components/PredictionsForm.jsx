@@ -31,6 +31,7 @@ const PredictionsForm = ({ isLoggedIn, onPredictionCreated, players }) => {
       : "/api/predictions-guest/";
 
     try {
+      console.log(data)
       const response = await api.post(endpoint, data);
 
       if (onPredictionCreated) {

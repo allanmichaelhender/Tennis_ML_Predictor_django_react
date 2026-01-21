@@ -22,22 +22,12 @@ data['tourney_date'] = pd.to_datetime(data['tourney_date'])
 
 
 def generate_data(player1_id, player2_id, match_date):
-    # player1_row = players.loc[players['full_name'] == player1_full_name]
-    # player1_id = player1_row['player_id'].iloc[0]
-    # player1_ranking_points = player1_row['ranking_points'].iloc[0]
-    
-    # player2_row = players.loc[players['full_name'] == player2_full_name]
-    # player2_id = player1_row['player_id'].iloc[0]
-    # player2_ranking_points =player2_row['ranking_points'].iloc[0]                   
-
-    # ranking_diff = player1_ranking_points - player2_ranking_points
-
-    # today_timestamp = pd.to_datetime('2025-01-01')
     today_timestamp = pd.to_datetime(match_date)
     six_months_ago = today_timestamp - pd.DateOffset(months=6)
     last_six_months = (data['tourney_date'] >= six_months_ago)
     data_last_six_months = data[last_six_months]
     data_last_six_months = data_last_six_months.sort_values(by='tourney_date', ascending=False)
+
 
     player1_w_filter = (data_last_six_months["w_id"] == player1_id)
     player1_l_filter = (data_last_six_months["l_id"] == player1_id)
@@ -51,10 +41,15 @@ def generate_data(player1_id, player2_id, match_date):
     player2_w = data_last_six_months[player2_w_filter]
     player2_l = data_last_six_months[player2_l_filter]
 
+    print("1:",player1_w.head())
+    print("2:",player2_w.head())
+    print("3:",player1_l.head())
+    print("4:",player2_l.head())
+
 
     def find_ranking_points(player_w, player_l):
-        w_ranking_points = player_w["winner_rank_points"].iloc[0]
-        l_ranking_points = player_l["loser_rank_points"].iloc[0]
+        w_ranking_points = player_w["winner_rank_points"].iloc[0] if not player_w.empty else 0
+        l_ranking_points = player_l["loser_rank_points"].iloc[0] if not player_l.empty else 0
 
         if l_ranking_points < w_ranking_points:
             return l_ranking_points
@@ -64,7 +59,7 @@ def generate_data(player1_id, player2_id, match_date):
     player1_ranking_points = find_ranking_points(player1_w, player1_l)
     player2_ranking_points = find_ranking_points(player2_w, player2_l)
 
-    print(player1_ranking_points)
+
 
     ranking_diff = player1_ranking_points - player2_ranking_points
 
@@ -142,7 +137,7 @@ def generate_data(player1_id, player2_id, match_date):
                 "bp_won_per_achieved_diff": bp_won_per_faced_diff,
                 "serve_winloss_diff": serve_winloss_diff,
                 "nonserve_winloss_diff": nonserve_winloss_diff,
-                "firstserve_win_diff": firstserve_win_diff}])  
+                "firstserve_win_diff": firstserve_win_diff}])
     return data_list
 
 

@@ -1,13 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
-import datetime
+from datetime import date
 
 
 # Create your models here.
 class Predictions(models.Model):
-    player1_id = models.BigIntegerField()
-    player2_id = models.BigIntegerField()
-    match_date = models.DateField(default=datetime.date(2025, 1, 1))
+    player1_id = models.CharField()
+    player2_id = models.CharField()
+    match_date = models.DateField(default=date.today)
     player1WinOddsLogistic = models.DecimalField(
         max_digits=20, decimal_places=3, default=0
     )
