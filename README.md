@@ -69,3 +69,10 @@ Backend
 2. Connect database and provide DATABASE_URL environmental variable
 3. Migrate and Collect Static with django
 4. Configure Gunicorn
+
+
+
+
+## Data & Acknowledgements
+
+All data comes from: https://github.com/Tennismylife/TML-Database
